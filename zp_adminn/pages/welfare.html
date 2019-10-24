@@ -1,0 +1,152 @@
+<style>
+	.row{
+		margin-left: 5px;
+	}
+	#stat{
+		color: #008000;
+	}
+	#staed{
+		color: #ff6600;
+	}
+	.btn-orange{
+		background: #ff6600;
+		font-size: 14px;
+		height: 35px;
+		color: #fff;
+	}
+	.btn-green{
+		background: #008000;
+		font-size: 14px;
+		height: 35px;
+		color: #fff;
+	}
+	table{
+		font-size: 16px
+	}
+</style>
+<div class="main">
+	<div class="row">
+    	<select name="job" id="welfare_select" class="form-control mb-3 col-2">
+    		<option value="">全部</option>
+    	</select>
+    	<!-- 表格 -->
+    	<table class="table" id="wel_table">
+    		<thead class="table-dark">
+    			<tr>
+    				<td>#</td>
+    				<td>福利名称</td>
+    				<td>状态</td>
+    				<td>操作</td>
+    			</tr>
+    		</thead>
+    		<tbody>
+    		</tbody>
+    	</table>
+    	<!-- 表格结束 -->
+</div>
+<script>
+	$(function () {
+		var baseURL="http://203.195.246.58:7777";
+		// 查询所有
+		function fillWelfare(){
+			var url=baseURL+"/Welfare/findAll"
+			$.get(url,function(res){
+				res.data.forEach(function(item){
+					if(item.status=="使用中"){
+						$(`<tr>
+	    				<td><input type="checkbox" value="`+item.id+`">`+item.id+`</td>
+	    				<td>`+item.name+`</td>
+	    				<td id="stat">`+item.status+`</td>
+	    				<td><button class="btn btn-orange" id="fonze">冻结</button></td>
+	    			</tr>`).appendTo(".table tbody")
+					}else if(item.status=="被冻结"){
+						$(`<tr>
+	    				<td><input type="checkbox" value="`+item.id+`"></td>
+	    				<td>`+item.name+`</td>
+	    				<td id="staed">`+item.status+`</td>
+	    				<td><button class="btn btn-green">恢复</button></td>
+	    			</tr>`).appendTo(".table tbody")
+					}
+				})
+			})
+		}
+		fillWelfare()
+		// 点击按钮发生变化
+		$("#wel_table").on("click","button",function(event){
+			
+				var id=$(this).parents("tr").children("td").find("input").val();
+				var url=baseURL+"/Welfare/findById"
+				var data={
+					id:id
+				}
+				$.get(url,data,function(res){
+				if(res.data.status=="使用中"){
+					var url=baseURL+"/Welfare/saveOrUpdate";
+					var name=res.data.name;
+					var data={
+						id:id,
+						name:name,
+						status:"被冻结"
+					}
+					$.post(url,data,function(item){
+						$(".table tbody").empty()
+						fillWelfare()
+					})
+				}else if(res.data.status=="被冻结"){
+					var url=baseURL+"/Welfare/saveOrUpdate";
+					var name=res.data.name;
+					var data={
+						id:id,
+						name:name,
+						status:"使用中"
+					}
+					
+					$.post(url,data,function(item){
+						console.log(item.status)
+						$(".table tbody").empty()
+						fillWelfare()
+					})
+				}
+			})
+	})
+	function onload(){
+		var url=baseURL+"/Welfare/findAll";
+		$.get(url,function(res){
+			res.data.forEach(function(item){
+				$(`<option value="`+item.id+`">`+item.id+`</option>`).appendTo("#welfare_select")
+			})
+		})
+	}
+	onload();
+	var data;
+	$("#welfare_select").change(function(){
+		var val=$(this).val();
+		var data={
+			id:val
+		}
+		console.log(data)
+		var url=baseURL+"/Welfare/findById"
+		$("#wel_table").empty();
+		$.get(url,data,function(res){
+			onload();
+			 res.data.forEach(function(item){
+				if(item.status=="使用中"){
+						$(`<tr>
+	    				<td><input type="checkbox" value="`+item.id+`"></td>
+	    				<td>`+item.name+`</td>
+	    				<td id="stat">`+item.status+`</td>
+	    				<td><button class="btn btn-orange" id="fonze">冻结</button></td>
+	    			</tr>`).appendTo(".table tbody")
+					}else if(item.status=="被冻结"){
+						$(`<tr>
+	    				<td><input type="checkbox" value="`+item.id+`"></td>
+	    				<td>`+item.name+`</td>
+	    				<td id="staed">`+item.status+`</td>
+	    				<td><button class="btn btn-green">恢复</button></td>
+	    			</tr>`).appendTo(".table tbody")
+					}
+			})
+		})
+	})
+	})
+</script>

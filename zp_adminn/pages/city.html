@@ -1,0 +1,87 @@
+<style>
+	.nav{
+		height: 300px;
+		width: 800px;
+		border: 1px solid #333;
+		margin-top: 50px;
+		margin-left: 80px;
+
+	}
+	.navtop{
+		height: 35px;
+		width: 100%;
+		background: #373a3c;
+		color: #fff;
+		text-indent: 1rem;
+		line-height: 35px;
+	}
+	.navtop>a{
+		float: right;
+		margin-right: 10px;
+		color: teal;
+	}
+	.navbottom{
+		height: 265px;
+		width: 100%;	
+		line-height: 50px;
+		font-size: 14px;
+	}
+	.navbottom >span{
+		margin-left: 8px;
+	}
+	.navbottom >a{
+		margin-left: 8px;
+	}
+	.input-group{
+		width: 280px;
+	}
+</style>
+<div class="main">
+	<div class="nav">
+		<div class="navtop">
+			<span>北京</span>
+		</div>
+		<div class="navbottom">
+		</div>
+	</div>
+</div>
+<script>
+	$(function () {
+		// 点击添加弹出输入框
+		$(".navbottom").on("click","a",function(event){
+			$(".navbottom a").remove();
+			$(".navbottom").append($(`<div class="input-group mb-3 " id="input_insert">
+				  <input type="text" class="form-control" placeholder="请输入城市名称" >
+				  <div class="input-group-append">
+				    <button class="input-group-text" id="basic-addon2">添加</button>
+  					</div>
+			</div>`))
+		})
+		var baseURL="http://203.195.246.58:7777";
+		// 查询所有函数
+		function findallcity(){
+			var url=baseURL+"/City/findAll/"
+			$.get(url,function(res){
+				res.data.forEach(function(item){
+					$(".navbottom").append($(`<span>`+item.name+`</span>`))
+				})
+				$(".navbottom").append($(`<a href="#">添加</a>`))
+			})
+		}
+		findallcity()
+		 //点击添加城市 
+		$(".navbottom").on("click","button",function(event){
+			var name=$("input[type=text]").val()
+			var data={
+				name:name,
+				provinceId:"15"
+			}
+			var url=baseURL+"/City/saveOrUpdate"
+			$.post(url,data,function(res){
+				$("#input_insert").remove();
+				$(".navbottom").empty();
+				findallcity()
+			})
+		})
+	})
+</script>

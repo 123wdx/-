@@ -1,0 +1,174 @@
+<style>
+	#btn_add{
+		float: right;
+		margin-top: 10px;
+	/*	margin-left: 800px;*/
+
+	}
+	.modal-backdrop.show{
+		z-index: -1;
+	}
+	#useradd_modal{
+		font-weight: bold;
+		margin-top: 10px;
+	}
+	
+	#connect{
+		background: #343a40;
+		color: #fff;
+		margin-left: 15px;
+		margin-bottom: 5px;
+	}
+	#person{
+		margin-left: 55px;
+		margin-bottom: 10px;
+	}
+	#useremit_modal{
+		margin-top: 20px;
+	}
+</style>
+<div class="main">
+	<div class="layui-tab">
+ 	 	<ul class="layui-tab-title">
+    		<li class="layui-this">求职列表</li>
+  		</ul>
+  	<div class="layui-tab-content">
+    	<div class="layui-tab-item layui-show">
+    		<div class="row">
+    			<button class="btn" id="connect">待联系</button>
+   			</div>
+    	<!-- 表格 -->
+    	<table class="table " id="user_table">
+    		<thead class="table-dark">
+    			<tr>
+    				<td>#</td>
+    				<td>求职人</td>
+    				<td>联系方式</td>
+    				<td>求职岗位</td>
+    				<td>简历</td>
+    				<td>申请时间</td>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			
+    		</tbody>
+    	</table>
+    	<!-- 表格结束 -->
+    		<!-- 详情模态框 -->
+    	<div class="modal"  id="useremit_modal">
+			 <div class="modal-dialog modal-lg" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title " id="name"></h5>
+			        
+			         <a href="javascript:void(0)" style="text-decoration: none; ">
+				         <span class="fa fa-frown-o text-info"></span>
+				         <!-- <span class="fa fa-mobile-alt text-info"></span> -->
+				         手机认证
+				         </a>
+
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			      <button class="btn btn-primary" id="person">个人信息</button>
+			       <form  id="useremit_form">
+					<div class="row mt-2">
+						 <!-- id -->
+			       	 <div class=" form-group">
+			        	<label for="user_id"></label>
+			        	<input type="hidden" id="user_id" name="id" class="form-control">
+			        </div>
+					<!-- id结束 -->
+					<!-- 姓名 -->
+					<div class=" form-group col-6 row">
+			        	<label for="user_gender" class="col-4 text-right">性别</label>
+			        	<input type="text" id="user_gender" name="gender" class="form-control col-8">
+			        </div>
+					<!-- 姓名 -->
+					<!-- 学历 -->
+					<div class=" form-group  col-6 row">
+			        	<label for="user_education" class="col-4 text-right">最高学历</label>
+			        	<input type="text" id="user_education" name="education" class="form-control col-8">
+			        </div>
+					<!-- 学历结束 -->
+					</div>
+					<div class="row">
+					<!-- 工作经验 -->
+					<div class=" form-group  col-6 row">
+			        	<label for="user_workTime" class="col-4 text-right">经验</label>
+			        	<input type="text" id="user_workTime" name="workTime" class="form-control col-8">
+			        </div>
+					<!-- 工作经验结束 -->
+					<!-- 出生年月 -->
+					<div class=" form-group  col-6 row">
+			        	<label for="user_password" class="col-4 text-right">出生年月</label>
+			        	<input type="text" id="user_password" name="passowrd" class="form-control col-8">
+			        </div>
+					<!-- 出生年月结束 -->
+					
+					</div>
+			       </form>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			        <button type="button" class="btn btn-primary">Save changes</button>
+			      </div>
+			    </div>
+			  </div>
+		</div>
+    	<!-- 详情模态框结束 -->
+    </div>
+  </div>
+</div>
+</div>
+<script>
+	var baseURL="http://203.195.246.58:7777";
+	// 加载页面函数
+	function reloadData(){
+		$("#user_table tbody").empty();
+		var url=baseURL+"/EmploymentJobhunter/findAllWithJobhAndEmpl";
+		$.get(url,function(res){
+			if(res.status===200){
+				res.data.forEach(function(item){
+					// console.log(item.id,item.username)
+					$(`<tr>
+				<td> <input type="checkbox" value="`+item.id+`"></td>
+				<td>`+item.jobhunter.realname+`</td>
+				<td>`+item.jobhunter.telephone+`</td>
+				<td>`+item.employment.job+`</td>
+				<td><a href="#" id="look">查看</a></td>
+				<td>`+item.askTime+`</td>
+				
+			</tr>`).appendTo("#user_table tbody")
+				})
+			}
+		})
+	}
+	$("#user_table").on("click","a",function(event){
+		$("#useremit_modal").modal("show");
+		var id = $(this).parents("tr").children("td").eq(0).find("input").val();
+		// var data={
+		// 	id:id
+		// }
+		console.log("id1",id);
+		var url=baseURL+"/EmploymentJobhunter/findAllWithJobhAndEmpl"
+		$.get(url,function(res){
+			res.data.forEach(function(item){
+				if(item.id == id){
+					$("#name").text(item.jobhunter.realname)
+					// console.log("name",item.jobhunter.realname);
+					$("#useremit_modal input[name=gender]").val(item.jobhunter.gender)
+					$("#useremit_modal input[name=education]").val(item.jobhunter.education)
+					$("#useremit_modal input[name=workTime]").val(item.jobhunter.workTime)
+					$("#useremit_modal input[name=birth]").val(item.jobhunter.birth)
+				}
+				
+			})
+		})
+	})
+$(function () {
+	reloadData()
+})
+</script>

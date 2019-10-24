@@ -1,0 +1,524 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="style/style.css"/>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="head">
+        <div class="h_c">
+            <div class="hl">
+                <p>北京 <span>[切换城市]</span></p>
+            </div>
+            <div class="hr">
+                <p><a href="#" id="login">登录 / 注册</a></p>
+                <div class="modal fade" id="loginModal" tabindex="-1">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="loginLabel">没有账号,先<a href="">注册</a></h5>
+                <button type="button" class="close" onclick="closeLoginModal()">
+                  <span>&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+            <form id="register_form">
+                <div class="row form-group">
+                    <label class="col-2 text-right" for="input_realname">姓名</label>
+                    <div class="col">
+                        <input class="form-control" type="text" id="input_realname" name="realname" placeholder="realname">
+                    </div> 
+                </div>
+                <div class="row form-group">
+                    <label class="col-2 text-right" for="input_password">密码</label>
+                    <div class="col">
+                        <input type="password" class="form-control" id="input_password" name="password" placeholder="Password">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-2 text-right" for="input_telephone">电话</label>
+                    <div class="col">
+                        <input class="form-control" type="text" name="telephone" id="input_telephne" placeholder="enter your phone number">
+                    </div>
+                </div>
+            </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeLoginModal()">取消</button>
+                <button id="login_certain" type="button" class="btn btn-primary" onclick="certainLoginModal()">确定</button>
+              </div>
+            </div>
+          </div>
+         </div>       
+                <p><a href="#">个人中心 <img src="images/index/u113.png" /></a>
+                </p>
+                <p><a href="#">商家中心 <img src="images/index/u113.png" /></a></p>
+            </div>
+        </div>
+    </div>
+    <div class="h_se">
+        <div class="s_logo">
+            <img id="u135_img" class="img " src="images/index/u135.png">
+        </div>
+        <div class="s_search">
+            <input type="text" id="ss" />
+            <input type="button" id="sb" value="搜职位" />
+           <!--  <img  id="si" src="images/index/u138.png" />
+            <ul>
+                <li><a href="#">收营员</a></li>
+                <li><a href="#">收营员</a></li>
+                <li><a href="#">收营员</a></li>
+                <li><a href="#">收营员</a></li>
+                <li><a href="#">收营员</a></li>
+            </ul> -->
+        </div>
+    </div>
+    <div class="hm">
+        <div class="hm_1">
+            <div class="hm_1_l">职位：</div>
+            <div class="hm_1_r">
+                <ul id="position">
+                    <li><a href="javascript:;"   class="s">全部</a></li>
+                </ul>
+            </div>
+            <div class="c"></div>
+        </div>
+        <div class="hm_1">
+            <div class="hm_1_l">地点：</div>
+            <div class="hm_1_r">
+                <ul id="location">
+                    <li><a href="javascript:;"   class="s">全部</a></li>
+                </ul>
+            </div>
+            <div class="c"></div>
+        </div>
+        <div class="hm_1">
+            <div class="hm_1_l">福利：</div>
+            <div class="hm_1_r">
+                <ul class="welf">
+                    <li><a href="javascript:;" class="s">全部</a></li>
+                </ul>
+            </div>
+            <div class="c"></div>
+        </div>
+        <div class="hm_1 b">
+            <div class="hm_1_l">已选：</div>
+            <div class="hm_1_r">
+                <div class="yx">超市/零售 - 收营员 <img id="u192_img" class="img " src="images/index/u192.png"></div>
+            </div>
+            <div class="c"></div>
+        </div>
+    </div>
+    <div id="con_menu">
+    </div>
+   
+    <div class="ym">
+        <ul>
+            <li>&lt;</li>
+            <li>1</li>
+            <li>2</li>
+            <li>...</li>
+            <li>10</li>
+            <li>&gt;</li>
+        </ul>
+    </div>
+
+    <div class="f" style=" border:1px solid #999;">
+        
+        ©2015-2019 ####################有限公司 ##ICP备#############号 ##公网安备###############号 联系电话：####-###########
+    </div>
+     <!-- 添加的模态框 -->
+        <div class="modal"  id="add_modal">
+             <div class="modal-dialog " role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">快速报名</h5>
+                    <button type="button" class="close" data-dismiss="modal"onclick="closemodel()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                  <!-- 添加用户模态框 -->
+                    <form  id="useradd_form">
+                        <!-- 姓名 -->
+                    <div class=" form-group  row">
+                        <label for="user_realname" class="col-4 text-center">姓名</label>
+                        <input type="text" id="user_realname" name="realname" class="form-control col-7">
+                    </div>
+                    <!-- 姓名 -->
+                    <!-- 用户名 -->
+                    <div class=" form-group  row">
+                        <label for="user_username" class="col-4 text-center">用户名</label>
+                        <input type="text" id="user_username" name="username" class="form-control  col-7">
+                    </div>
+                    <!-- 用户名结束 -->
+                    
+                    <!-- 性别 -->
+                    <div class="form-group row">
+                        <label class="col-4 text-center">性别</label>
+                        <div class="col-7">
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" value="男" id="input_male" name="gender">
+                                <label  class="form-check-label"  for="input_male" >男</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" id="input_female" name="gender" value="女" class="form-check-input">
+                                <label for="input_female">女</label>
+                            </div>
+                            </div>
+                    </div>
+                    <!-- 性别结束 -->
+                      <!-- 出生年月 -->
+                    <div class=" form-group   row">
+                        <label for="user_birth" class="col-4 text-center">出生日期</label>
+                        <input type="text" id="user_birth" name="birth" class="form-control col-7">
+                    </div>
+                    <!-- 出生年月结束 -->
+                     <!-- 学历 -->
+                    <div class=" form-group row">
+                        <label for="user_education" class="col-4 text-center">学历</label>
+                        <input type="text" id="user_education" name="education" class="form-control col-7">
+                    </div>
+                    <!-- 学历结束 -->
+                     <!-- 联系方式 -->
+                    <div class=" form-group row">
+                        <label for="user_telephone" class="col-4 text-center">联系方式</label>
+                        <input type="text" id="user_telephone" name="telephone" class="form-control col-7">
+                    </div>
+                    <!-- 联系方式结束 -->
+                    
+                        <!-- 工作时间-->
+                    <div class=" form-group row">
+                        <label for="user_workTime" class="col-4 text-center">工作时间</label>
+                        <input type="text" id="user_workTime" name="workTime" class="form-control  col-7">
+                    </div>
+                    <!-- 工作时间结束 -->
+                    
+                   </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closemodel()">Close</button>
+                    <button type="button" class="btn btn-primary" id="submitmodal">Save changes</button>
+                  </div>
+                </div>
+              </div>
+        </div>
+        <!-- 添加的模态框结束 -->
+        <!-- 提示框开始 -->
+        <div class="toast"  style="position: absolute;top: 1em;right: 1em" >
+        <div class="toast-header">
+            <i class="fa fa-bell text-success mr-5"></i>
+            <strong class="mr-auto">success</strong>
+             <small class="text-muted"></small>
+             <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" >
+                 <span aria-hidden="true">&times;</span>
+             </button>
+        </div>
+        <div class="toast-body">
+        </div>
+        </div>
+        <!-- 提示框结束 -->
+    <script>
+    function closeLoginModal(){
+         $("#loginModal").modal("hide")
+    }
+     function closemodel(){
+        $("#add_modal").modal("hide")
+        }
+$(function(){
+    $("#login").click(function(event){
+        $("#loginModal").modal("show")
+    })
+     var baseURL="http://203.195.246.58:7777";
+      
+     function toast(msg){
+        $(".toast .toast-body").text(msg);
+        $(".toast").toast("show")
+     }
+     $(".toast").toast({
+        delay:2000
+     })
+     //数组去重
+        function unique(arr){            
+            for(var i=0; i<arr.length; i++){
+                for(var j=i+1; j<arr.length; j++){
+                    if(arr[i]==arr[j]){         //第一个等同于第二个，splice方法删除第二个
+                        arr.splice(j,1);
+                        j--;
+                    }
+                }
+            }
+        return arr;
+        }
+     // 查询所有的职位
+        function fillpos(){
+            var url=baseURL+"/Employment/findAll"
+            $.get(url,function(res){
+            var positionarr=[]
+            res.data.forEach(function(item){
+                positionarr.push(item.job);
+                positionarr1=unique(positionarr)
+         })
+            positionarr1.forEach(function(item){
+                 // console.log(item.name)
+            $(`<li><a href="javascript:;" >`+item+`</a></li>`).appendTo("#position")
+            })
+         })
+         }
+      fillpos();
+      // 查询所有的地点
+     function fillLoc(){
+         var url=baseURL+"/Employment/findAll";
+         $.get(url,function(res){
+            var locationarr=[];
+         res.data.forEach(function(item){
+            locationarr.push(item.city);
+            locationarr1=unique(locationarr)
+        })
+         locationarr1.forEach(function(item){
+             // console.log(item.name)
+        $(`<li><a href="javascript:;" >`+item+`</a></li>`).appendTo("#location")
+         })
+      })
+     }
+     fillLoc()
+       // 查询所有福利
+       function fillWel(){
+         var url=baseURL+"/Employment/findAll";
+        $.get(url,function(res){
+            var welfarearr=[]
+        res.data.forEach(function(item){
+            welfarearr.push(item.welfare)
+            welfarearr1=unique(welfarearr)
+      })
+        welfarearr1.forEach(function(item){
+             // console.log(item.name)
+        $(`<li><a href="javascript:;" >`+item+`</a></li>`).appendTo(".welf")
+        })
+        })
+       }
+        fillWel()
+    function fillEmployment(){
+        $('#con_menu').empty()
+         var url=baseURL+"/Employment/findAll";
+         $.get(url,function(res){
+
+         res.data.forEach(function(item){
+                // console.log(item)
+            $(`<div class="m">
+                 <h4>`+item.title+`</h4>
+                <div class="m_1">`+item.salary+`元/月</div>
+                <div class="w">
+                <div class="m_2 c1">`+item.welfare+`</div>
+                <div class="m_2 c2">包吃</div>
+                <div class="m_2 c3">包住</div>
+                </div>
+                <div class="m_9">
+                    <p>工作时间:`+item.workingHours+`</p>
+                    <p>工作类型:`+item.job+`</p>
+                    <p>招聘人数:`+item.num+`</p>
+                    <p>工作地点:`+item.city+`</p>
+                </div>
+            <div class="m_3" id="submit">一键报名<span>`+item.id+`</span></div></div>`).appendTo("#con_menu");
+        })
+    })
+    }
+    fillEmployment()
+    // 关闭模态框
+  
+    // 点击一键报名弹出模态框
+    $("#con_menu").on({click:function(){
+        id=$(this).find("span").text()
+        $('#add_modal').modal('show') 
+        // $("#") 
+    }},'.m_3')
+   //按用名查询
+        $('#sb').on('click',function(event){
+            var job = $('#ss').val();
+            var obj = {
+                job:job
+            }
+            $.get(baseURL+'/Employment/findByJob',obj,function(res){
+                 console.log(res.data)
+                $('#con_menu').empty();
+                 res.data.forEach(function(item){
+                // console.log(item)
+                 $(`<div class="m">
+                        <h4>`+item.title+`</h4>
+                        <div class="m_1">`+item.salary+`元/月</div>
+                        <div class="w">
+                        <div class="m_2 c1">`+item.welfare+`</div>
+                        <div class="m_2 c2">包吃</div>
+                        <div class="m_2 c3">包住</div>
+                        </div>
+                        <div class="m_9">
+                            <p>工作时间:`+item.workingHours+`</p>
+                            <p>工作类型:`+item.job+`</p>
+                            <p>招聘人数:`+item.num+`</p>
+                            <p>工作地点:`+item.city+`</p>
+                        </div>
+                        <div class="m_3" id="submit">一键报名<span>`+item.id+`</span></div></div>`).appendTo("#con_menu");
+             })
+            })
+          })
+   //给点击工作查询绑定事件
+        $("#position").on("click","a",function(event){
+//          alert($(this).text())
+            if ($(this).text() == "全部") {
+                $('#position .s').removeClass('s')
+                $(this).addClass('s')
+                $('#con_menu').empty()
+                reloadEmployment()
+            } else{
+                $('#position .s').removeClass('s')
+                $(this).addClass('s')
+                // 交互
+                var url = baseURL +"/Employment/findByJob"
+                var data = {
+                    job:$(this).text()
+                }
+                $.get(url,data,function(result){
+                    $('#con_menu').empty()
+                    result.data.forEach(function(item,index){
+                        $(`
+                        <div class="m">
+                            <h4>`+item.title+`</h4>
+                            <div class="m_1">`+item.salary+` 元/月</div>
+                            <div class="w">
+                            <div class="m_2 c1">`+item.welfare+`</div>
+                            <div class="m_2 c2">包吃</div>
+                            <div class="m_2 c3">包住</div>
+                            </div>
+                            <div class="m_9">
+                                <p>工作时间：`+item.workingHours+`</p>
+                                <p>工作类型：`+item.job+`</p>
+                                <p>招聘人数：`+item.num+`人</p>
+                                <p>工作地点：`+item.city+`</p>
+                            </div>
+                            <div class="m_3" id="submit">一键报名</div>    
+                        </div>
+                        `).appendTo('#con_menu')
+                        })  
+                    })
+                }           
+        })
+    // 给点击地址绑定事件
+    $("#location").on("click","a",function(event){
+        if($(this).text()=="全部"){
+            $("#location .s").removeClass("s");
+            $(this).addClass('s');
+              $('#con_menu').empty()
+            fillEmployment();
+        }else{
+            $("#location .s").removeClass('s');
+            $(this).addClass('s');
+            var url=baseURL+"/Employment/findByCity";
+              var data = {
+                    title:$(this).text()
+                }
+                $.get(url,data,function(result){
+                    $('#con_menu').empty()
+                    result.data.forEach(function(item,index){
+                        $(`
+                        <div class="m">
+                            <h4>`+item.title+`</h4>
+                            <div class="m_1">`+item.salary+` 元/月</div>
+                            <div class="w">
+                            <div class="m_2 c1">`+item.welfare+`</div>
+                            <div class="m_2 c2">包吃</div>
+                            <div class="m_2 c3">包住</div>
+                            </div>
+                            <div class="m_9">
+                                <p>工作时间：`+item.workingHours+`</p>
+                                <p>工作类型：`+item.job+`</p>
+                                <p>招聘人数：`+item.num+`人</p>
+                                <p>工作地点：`+item.city+`</p>
+                            </div>
+                            <div class="m_3" id="submit">一键报名</div>    
+                        </div>
+                        `).appendTo('#con_menu')
+                        })  
+                    })
+        }
+    })
+      // 给点击地址绑定事件
+    $(".welf").on("click","a",function(event){
+        if($(this).text()=="全部"){
+            $(".welf .s").removeClass("s");
+            $(this).addClass('s');
+              $('#con_menu').empty()
+            fillEmployment();
+        }else{
+            $(".welf .s").removeClass('s');
+            $(this).addClass('s');
+            var url=baseURL+"/Employment/findByWelfare";
+              var data = {
+                    title:$(this).text()
+                }
+                $.get(url,data,function(result){
+                    $('#con_menu').empty()
+                    result.data.forEach(function(item,index){
+                        $(`
+                        <div class="m">
+                            <h4>`+item.title+`</h4>
+                            <div class="m_1">`+item.salary+` 元/月</div>
+                            <div class="w">
+                            <div class="m_2 c1">`+item.welfare+`</div>
+                            <div class="m_2 c2">包吃</div>
+                            <div class="m_2 c3">包住</div>
+                            </div>
+                            <div class="m_9">
+                                <p>工作时间：`+item.workingHours+`</p>
+                                <p>工作类型：`+item.job+`</p>
+                                <p>招聘人数：`+item.num+`人</p>
+                                <p>工作地点：`+item.city+`</p>
+                            </div>
+                            <div class="m_3" id="submit">一键报名</div>    
+                        </div>
+                        `).appendTo('#con_menu')
+                        })  
+                    })
+        }
+    })
+    $("#add_modal").on("click","#submitmodal",function(){
+        // alert(1)
+         var realname=$("#useradd_form input[name=realname]").val();
+       var username=$("#useradd_form input[name=username]").val();
+       var gender=$("input[name=gender]:checked").val();
+       var education=$("#useradd_form input[name=education]").val();
+        var telephone=$("#useradd_form input[name=telephone]").val();
+        var workTime=$("input[name=workTime]").val();
+         var birth=$("#useradd_form input[name=birth]").val();
+         // 调用后台接口保存
+         var url=baseURL+"/Jobhunter/quickRegistration";
+         var data={
+            employmentId:id,
+            username:username,
+            realname:realname,
+            education:education,
+            telephone:telephone,
+            workTime:workTime,
+            birth:birth,
+            gender:gender
+         }
+         console.log(data)
+         $.post(url,data,function(res){
+            if(res.status===200){
+                closemodel();
+                fillEmployment();
+                toast("保存成功")
+            }
+         })
+    })
+
+})
+  
+</script>
+</body>
+</html>

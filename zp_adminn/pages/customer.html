@@ -1,0 +1,362 @@
+<style>
+	#btn_add{
+		float: right;
+		margin-top: 10px;
+		background: #ff6600;
+		color: #fff;
+	/*	margin-left: 800px;*/
+
+	}
+	.modal-backdrop.show{
+		z-index: -1;
+	}
+	#useradd_modal{
+		font-weight: bold;
+		margin-top: 10px;
+	}
+	.input-group{
+		width: 280px;
+		margin-left: 20px;
+	}
+</style>
+<div class="main">
+	<div class="layui-tab">
+  	<ul class="layui-tab-title">
+    <li class="layui-this">客服列表</li>
+  </ul>
+   <button class="btn " id="btn_add">添加客服</button>
+  <div class="layui-tab-content">
+    <div class="layui-tab-item layui-show">
+    	<div class="row">
+    		<select name="job" id="user_degree" class="form-control mb-3 col-3">
+    			<option value="">在线</option>
+    		</select>
+    		<!-- 按标题查询 -->
+    		<select name="job" id="user_gender" class="form-control mb-3 col-3">
+    			<option value="">性别</option>
+    		</select>
+    		<!-- 按标题查询结束 -->	
+    		<!-- 按标题查询 -->
+		   	<div class="input-group mb-3">
+		  		<input type="text" placeholder="请输入关键字" class="form-control" >
+		  		<div class="input-group-append">
+		    		<span class="input-group-text" id="basic-addon2">查询</span>
+		 	 	</div>
+			</div>
+    	<!-- 按标题查询结束 -->
+    	</div>
+    <!-- 表格 -->
+    <table class="table" id="user_table">
+    		<thead class="table-dark">
+    			<tr>
+    				<td>#</td>
+    				<td>用户名</td>
+    				<td>姓名</td>
+    				<td>性别</td>
+    				<td>状态</td>
+    				<td>操作</td>
+    			</tr>
+    		</thead>
+    		<tbody>
+    		</tbody>
+    	</table>
+    	<!-- 表格结束 -->
+    	<!-- 添加的模态框 -->
+    	<div class="modal"  id="useradd_modal">
+			 <div class="modal-dialog modal-lg" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title">添加客服</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			       <form  id="useradd_form">
+						<!-- 用户名 -->
+					<div class=" form-group row">
+			        	<label for="user_username" class="col-4 text-center">用户名</label>
+			        	<input type="text" id="user_username" name="username" class="form-control  col-7">
+			        </div>
+					<!-- 用户名结束 -->
+					<!-- 姓名 -->
+					<div class=" form-group row">
+			        	<label for="user_realname" class="col-4 text-center">姓名</label>
+			        	<input type="text" id="user_realname" name="realname" class="form-control col-7">
+			        </div>
+					<!-- 姓名 -->
+						<!-- 性别 -->
+					<div class="form-group  row">
+						<label class="col-4 text-center">性别</label>
+						<div class="col-8">
+							<div class="form-check form-check-inline">
+								<input type="radio" class="form-check-input" value="男" id="input_male" name="gender">
+								<label  class="form-check-label"  for="input_male" >男</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input type="radio" id="input_female" name="gender" value="女" class="form-check-input">
+								<label for="input_female">女</label>
+							</div>
+							</div>
+					</div>
+					<!-- 性别结束 -->
+					<!-- 状态 -->
+					<div class=" form-group row">
+			        	<label for="user_currentStatus" class="col-4 text-center ">状态</label>
+			        	<input type="text" id="user_currentStatus" name="status" class="form-control col-7">
+			        </div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			        <button type="button" class="btn btn-primary" onclick="submit()">Save changes</button>
+			      </div>
+			    </div>
+			  </div>
+		</div>
+    	<!-- 添加的模态框结束 -->
+    	<!-- 修改模态框 -->
+    	<div class="modal"  id="useremit_modal">
+			 <div class="modal-dialog modal-lg" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title">添加用户</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			       <form  id="useremit_form">
+			       <!-- id -->
+			       	 <div class=" form-group">
+			        	<label for="user_id"></label>
+			        	<input type="hidden" id="user_id" name="id" class="form-control">
+			        </div>
+					<!-- id结束 -->
+					<div class="row mt-2">
+						<!-- 用户名 -->
+					<div class=" form-group col-6 row">
+			        	<label for="user_username" class="col-4 text-right">用户名</label>
+			        	<input type="text" id="user_username" name="username" class="form-control  col-8">
+			        </div>
+					<!-- 用户名结束 -->
+					<!-- 姓名 -->
+					<div class=" form-group col-6 row">
+			        	<label for="user_realname" class="col-4 text-right">姓名</label>
+			        	<input type="text" id="user_realname" name="realname" class="form-control col-8">
+			        </div>
+					<!-- 姓名 -->
+					</div>
+					<div class="row">
+						<!-- 密码 -->
+					<div class=" form-group  col-6 row">
+			        	<label for="user_password" class="col-4 text-right">密&nbsp&nbsp码</label>
+			        	<input type="text" id="user_password" name="passowrd" class="form-control col-8">
+			        </div>
+					<!-- 密码结束 -->
+					<!-- 学历 -->
+					<div class=" form-group  col-6 row">
+			        	<label for="user_education" class="col-4 text-right">学历</label>
+			        	<input type="text" id="user_education" name="education" class="form-control col-8">
+			        </div>
+					<!-- 学历结束 -->
+					</div>
+					<div class="row">
+						
+					<!-- 联系方式 -->
+					<div class=" form-group  col-6 row">
+			        	<label for="user_telephone" class="col-4 text-right">联系方式</label>
+			        	<input type="text" id="user_telephone" name="telephone" class="form-control col-8">
+			        </div>
+					<!-- 联系方式结束 -->
+					
+					</div>
+			       </form>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			        <button type="button" class="btn btn-primary" onclick="emit()">Save changes</button>
+			      </div>
+			    </div>
+			  </div>
+		</div>
+    	<!-- 修改模态框结束 -->
+ 		<!-- 提示框开始 -->
+    	<div class="toast"  style="position: absolute;top: 1em;right: 1em" >
+	  	<div class="toast-header">
+	     	<i class="fa fa-bell text-success mr-5"></i>
+	    	<strong class="mr-auto">success</strong>
+	   		 <small class="text-muted"></small>
+	   		 <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" >
+	     	 	<span aria-hidden="true">&times;</span>
+	   		 </button>
+  		</div>
+		<div class="toast-body">
+		</div>
+		</div>
+    	<!-- 提示框结束 -->
+    </div>
+  </div>
+</div>
+</div>
+<script>
+	var baseURL="http://203.195.246.58:7777";
+	// 加载页面函数
+	function reloadData(){
+		$("#user_table tbody").empty();
+		var url=baseURL+"/CustomerService/findAll";
+		$.get(url,function(res){
+			if(res.status===200){
+				res.data.forEach(function(item){
+					// console.log(item.id,item.username)
+					$(`<tr>
+				<td><input type="checkbox" value="`+item.id+`"></td>
+				<td>`+item.username+`</td>
+				<td>`+item.realname+`</td>
+				<td>`+item.gender+`</td>
+				<td>`+item.status+`</td>
+				<td><a href="#" id="btn_del">
+						<span class="fa fa-trash text-danger mr-3 "></span></a>
+				</td>
+			</tr>`).appendTo("#user_table tbody")
+				})
+			}
+		})
+	}
+	// 添加函数
+	function submit(){
+		var username=$("input[name=username]").val();
+		var realname=$("#useradd_form input[name=realname]").val();
+		var gender= $("input[type=radio]:checked").val();
+		var birth=$("#useradd_form input[name=birth]").val();
+		var status=$("#useradd_form input[name=status]").val();
+		var url=baseURL+"/CustomerService/saveOrUpdate"
+		var data={
+			// id:id,
+			username:username,
+			realname:realname,
+			gender:gender,
+			status:status,
+		}
+		console.log("data",data);
+		$.post(url,data,function(result){
+			if (result.status===200) {
+				reloadData()
+				closemodal()
+				
+				toast("添加成功")
+			}
+		})
+	}	
+	// 添加函数结束
+	// 关闭模态框函数
+	function closemodal(){
+	$("#useradd_modal").modal("hide")
+	}
+	// 关闭模态框函数结束
+
+	// 弹出提示框函数
+	function toast(msg){
+	$(".toast .toast-body").text(msg);
+	$(".toast").toast("show")
+	}
+	// 弹出提示框函数结束
+$(function () {
+	// 给添加用户绑定事件
+	$("#btn_add").click(function(){
+		$("#useradd_modal").modal("show")
+		var id=$("#useradd_form input[name=id]").val("");
+		var username=$("#useradd_form input[name=username]").val("");
+		var realname=$("#useradd_form input[name=realname]").val("");
+		var gender= $("input[type=radio]:checked").val("");
+		var status=$("#useradd_form input[name=status]").val("");
+	})
+	// 给添加用户绑定事件结束
+	reloadData()
+	$(".toast").toast({
+	delay:2000
+		})
+	function onload(){
+		var url=baseURL+"/CustomerService/findAll"
+		$.get(url,function(res){
+			res.data.forEach(function(item){
+				$(`<option name="status" value="`+item.status+`">`+item.status+`</option>`).appendTo("#user_degree")
+				$(`<option name="gender" value="`+item.gender+`">`+item.gender+`</option>`).appendTo("#user_gender")
+			})
+		})
+	}
+	onload()
+	// 通过状态查询
+		var data;
+		$("#user_degree").change(function(){
+			var val=$(this).val();
+			var obj={
+				status:val
+			}
+			// console.log(obj)
+			var url=baseURL+"/CustomerService/findByEducation";
+			$("#user_table tbody").empty();
+			$.get(url,obj,function(res){
+				
+				onload();
+				res.data.forEach(function(item){
+					$(`<tr>
+				<td><input type="checkbox" value="`+item.id+`"></td>
+				<td>`+item.username+`</td>
+				<td>`+item.realname+`</td>
+				<td>`+item.gender+`</td>
+				<td>`+item.status+`</td>
+				<td><a href="#" id="btn_del">
+						<span class="fa fa-trash text-danger mr-3 "></span></a>
+				</td>
+			</tr>`).appendTo("#user_table tbody")
+				})
+			})
+		})
+		// 通过性别查询
+		var data;
+		$("#user_gender").change(function(){
+			var val=$(this).val();
+			var obj={
+				gender:val
+			}
+			// console.log(obj)
+			var url=baseURL+"/CustomerService/findByGender";
+			$("#user_table tbody").empty();
+			$.get(url,obj,function(res){
+				
+				onload();
+				res.data.forEach(function(item){
+					$(`<tr>
+						<td><input type="checkbox" value="`+item.id+`"></td>
+						<td>`+item.username+`</td>
+						<td>`+item.realname+`</td>
+						<td>`+item.gender+`</td>
+						<td>`+item.status+`</td>
+						<td><a href="#" id="btn_del">
+								<span class="fa fa-trash text-danger mr-3 "></span></a>
+						</td>
+					</tr>`).appendTo("#user_table tbody")
+				})
+			})
+		})
+	// 绑定删除和修改事件
+	$("#user_table tbody").on("click","a",function(event){
+		switch(this.id){
+			// 删除事件
+			case "btn_del":
+			var id=$(this).parents("tr").children("td").find("input").val();
+			var data={
+				id:id
+			}
+			$("#user_table tbody").empty()
+			var url=baseURL+"/CustomerService/deleteById"
+			$.post(url,data,function(res){
+				toast("删除成功");
+				reloadData()
+			})
+			break;
+		}
+	})
+	// 绑定删除和修改事件结束
+})
+</script>

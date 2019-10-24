@@ -1,0 +1,470 @@
+    	
+<style>
+  #address_bus,#industry_bus,#scale_bus{
+    width: 15%;
+  }
+  .modal-backdrop.show{
+    z-index: -1;
+  }
+  .btn-orange{
+    background: #ff0000;
+    font-size: 14px;
+    height: 35px;
+    color: #fff;
+  }
+  .btn-green{
+    background: #008000;
+    font-size: 14px;
+    height: 35px;
+    color: #fff;
+  }
+  #staed{
+    color: #ff0000;
+  }
+  #stat{
+    color: #008000;
+  }
+  #job_resuit{
+    width: 20%;
+  }
+  #btn_public{
+    float: right;
+    margin-top: 10px;
+  }
+  .modal-backdrop.show{
+    z-index: -1;
+  }
+  #emitmodal{
+    font-weight: bold;
+  }
+  #bus_table{
+    text-align: center;
+  }
+</style>
+<div class="main">
+  <div class="layui-tab">
+  <ul class="layui-tab-title">
+    <li class="layui-this">商家审核</li>
+    <li>招聘审核</li> 
+  </ul>
+  <div class="layui-tab-content">
+    <div class="layui-tab-item layui-show">
+    <div class="row">
+    <select name="address" id="address_bus" class="form-control ml-2"><option value="">所在地</option></select>
+    <select name="industry" id="industry_bus" class="form-control ml-2"><option value="">行业</option></select>
+    <select name="scale" id="scale_bus" class="form-control ml-2"><option value="">规模</option></select>
+  </div>
+  <table class="table text-center mt-3 " id="bus_table">
+    <thead class="table-dark">
+      <tr>
+        <td>编号</td>
+        <td>企业名称</td>
+        <td>联系人姓名</td>
+        <td>联系方式</td>
+        <td>行业类型</td>
+        <td>地址</td>
+        <td>公司规模</td>
+        <td>详情</td>
+        <td>操作</td>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+ 
+   </div>
+    <div class="layui-tab-item"> 
+    <div class="row">
+      <select name="job" id="job_resuiting" class="form-control mb-3 col-3">
+        <option value="">职业类型</option>
+      </select>
+
+      <!-- 按标题查询 -->
+    <input type="text" id="title_inputing" placeholder="请输入关键字" class="form-control col-3">
+      <!-- 按标题查询结束 -->
+    </div>
+      <!-- 表格开始 -->
+      <table class="table table-bordered" id="fir">
+        <thead class="table-dark">
+          <tr>
+            <td>#</td>
+            <td>招聘标题</td>
+            <td>发布人</td>
+            <td>联系方式</td>
+            <td>职位</td>
+            <td>发布时间</td>
+            <td>详情</td>
+            <td>操作</td>
+          </tr>
+        </thead>
+        <tbody>
+          
+        </tbody>
+      </table>
+      <!-- 表格结束 -->
+     
+      <!-- 详情模态框 -->
+    <div class="modal" tabindex="-1" id="detail_modal">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">190/天上一休一</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <h6>职位描述</h6>
+            </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+      </div>
+    </div>
+      <!-- 详情模态框结束 -->
+     </div>
+  </div>
+
+</div>
+</div>
+<script>
+  var baseURL="http://203.195.246.58:7777";
+  function reloadDate() {
+      var url=baseURL+"/Business/findAll"
+      $.get(url,function(result){
+        $("#bus_table tbody").empty();
+        result.data.forEach(function(item){
+         if(item.status==null){
+           $(`<tr>
+            <td><input type="checkbox" value="`+item.id+`"></td>
+            <td>`+item.name+`</td>
+            <td>`+item.contactName+`</td>
+            <td>`+item.contactPhone+`</td>
+            <td>`+item.industry+`</td>
+            <td>`+item.location+`</td>
+            <td>`+item.scale+`</td>
+            <td><a href="#" id="btn_detail">详情</a></td>
+            <td><button class="btn btn-orange" id="through">通过</button>
+                <button class="btn btn-green" id="refuse">拒绝</button></td>
+            </tr>`).appendTo("#bus_table tbody")
+         }else if(item.status=="审核通过"){
+             $(`<tr>
+            <td><input type="checkbox" value="`+item.id+`" ></td>
+            <td>`+item.name+`</td>
+            <td>`+item.contactName+`</td>
+            <td>`+item.contactPhone+`</td>
+            <td>`+item.industry+`</td>
+            <td>`+item.location+`</td>
+            <td>`+item.scale+`</td>
+            <td><a href="#" id="btn_detail">详情</a></td>
+           <td id="staed">审核通过</td>
+            </tr>`).appendTo("#bus_table tbody")
+         }else if(item.status=="拒绝"){
+           $(`<tr>
+            <td><input type="checkbox" value="`+item.id+`" ></td>
+            <td>`+item.name+`</td>
+            <td>`+item.contactName+`</td>
+            <td>`+item.contactPhone+`</td>
+            <td>`+item.industry+`</td>
+            <td>`+item.location+`</td>
+            <td>`+item.scale+`</td>
+            <td><a href="#" id="btn_detail">详情</a></td>
+           <td id="stat">已拒绝</td>
+            </tr>`).appendTo("#bus_table tbody")
+         }
+        })
+      })
+    }
+    $("#bus_table").on("click","button",function(event){
+      
+        var id=$(this).parents("tr").children("td").find("input").val();
+        var url=baseURL+"/Business/findById"
+        var data={
+          id:id
+        }
+        $.get(url,data,function(res){
+        $("#through").click(function(){
+          if(res.data.status==null){
+           var url=baseURL+"/Business/saveOrUpdate";
+          var name=res.data.name;
+          var contactName=res.data.contactName;
+          var contactPhone=res.data.contactPhone;
+          var industry=res.data.industry;
+          var location=res.data.location;
+          var scale=res.data.scale;
+          var data={
+            id:id,
+            name:name,
+            contactName:contactName,
+            contactPhone:contactPhone,
+            industry:industry,
+            location:location,
+            scale:scale,
+            status:"审核通过"
+          }
+          $.post(url,data,function(item){
+            $("#bus_table tbody").empty()
+            reloadDate()
+          })
+            }
+        })
+
+          
+          // $("#refuse").click(function(){
+          // var url=baseURL+"/Business/saveOrUpdate";
+          // var name=res.data.name;
+          // var contactName=res.data.contactName;
+          // var contactPhone=res.data.contactPhone;
+          // var industry=res.data.industry;
+          // var location=res.data.location;
+          // var scale=res.data.scale;
+          // var data={
+          //   id:id,
+          //   name:name,
+          //   contactName:contactName,
+          //   contactPhone:contactPhone,
+          //   industry:industry,
+          //   location:location,
+          //   scale:scale,
+          //   status:"已拒绝"
+          // }
+          // $.post(url,data,function(item){
+          //   $("#bus_table tbody").empty()
+          //   reloadDate()
+          // })
+          // })
+         
+        // }
+      })     
+  })
+  $(function(){
+    // 通过地址查询
+    // 获取地址
+    var data;
+    $("#address_bus").change(function(){
+      var val=$(this).val();
+      var obj={
+        location:val
+      }
+      $("#bus_table tbody").empty();
+      var url=baseURL+"/Business/findByLocation"
+      // 调用后台接口
+      $.get(url,obj,function(res){
+        data=res.data;
+        onload();
+        // 将值渲染到表格中
+        res.data.forEach(function(item){
+          $(`<tr>
+          <td><input type="checkbox" value="`+item.id+`" name=""></td>
+          <td>`+item.name+`</td>
+          <td>`+item.contactName+`</td>
+          <td>`+item.contactPhone+`</td>
+          <td>`+item.industry+`</td>
+          <td>`+item.location+`</td>
+          <td>`+item.scale+`</td>
+          <td><a href="#" id="btn_detail">详情</a></td>
+          <td><a href="#" id="btn_del">
+              <span class="fa fa-trash text-danger mr-3 "></span></a>
+            <a href="#" id="btn_emit">
+              <span class="fa fa-edit text-primary "></td>
+          </tr>`).appendTo("#bus_table tbody")
+        })
+      })
+
+    })  
+    // 通过行业查询
+    // 获取行业
+    var data;
+    $("#industry_bus").change(function(){
+      var val=$(this).val();
+      var obj={
+        industry:val
+      }
+      var url=baseURL+"/Business/findByIndustry"
+      $("#bus_table tbody").empty();
+      $.get(url,obj,function(res){
+        data=res.data;
+        onload();
+        // 将值渲染到表格中
+        res.data.forEach(function(item){
+          $(`<tr>
+          <td><input type="checkbox" value="`+item.id+`" name=""></td>
+          <td>`+item.name+`</td>
+          <td>`+item.contactName+`</td>
+          <td>`+item.contactPhone+`</td>
+          <td>`+item.industry+`</td>
+          <td>`+item.location+`</td>
+          <td>`+item.scale+`</td>
+          <td><a href="#">详情</a></td>
+          <td><a href="#" id="btn_del">
+              <span class="fa fa-trash text-danger mr-3 "></span></a>
+            <a href="#" id="btn_emit">
+              <span class="fa fa-edit text-primary "></td>
+          </tr>`).appendTo("#bus_table tbody");
+        })
+      })
+
+    })
+    // 通过规模查询
+    var data;
+    $("#scale_bus").change(function(){
+      var val=$(this).val();
+      var obj={
+        scale:val
+      }
+      var url=baseURL+"/Business/findByScale"
+      $("#bus_table tbody").empty();
+      $.get(url,obj,function(res){
+        onload();
+        // 将值渲染到表格中
+        res.data.forEach(function(item){
+          $(`<tr>
+          <td><input type="checkbox" value="`+item.id+`" name=""></td>
+          <td>`+item.name+`</td>
+          <td>`+item.contactName+`</td>
+          <td>`+item.contactPhone+`</td>
+          <td>`+item.industry+`</td>
+          <td>`+item.location+`</td>
+          <td>`+item.scale+`</td>
+          <td><a href="#">详情</a></td>
+          <td><a href="#" id="btn_del">
+              <span class="fa fa-trash text-danger mr-3 "></span></a>
+            <a href="#" id="btn_emit">
+              <span class="fa fa-edit text-primary "></td>
+          </tr>`).appendTo("#bus_table tbody")
+        })
+      })
+
+    })
+    
+    
+    
+  // 通过某种方式查询
+  function onload(){
+    var url=baseURL+"/Business/findAll"
+    $.get(url,function(result){
+      result.data.forEach(function(item){
+        $(`<option name="location" value="`+item.location+`">`+item.location+`</option>`).appendTo("#address_bus")
+        $(`<option name="industry" value="`+item.industry+`">`+item.industry+`</option>`).appendTo("#industry_bus")
+        $(`<option name="scale" value="`+item.scale+`">`+item.scale+`</option>`).appendTo("#scale_bus")
+        $(`<option name="id" value="`+item.id+`">`+item.id+`</option>`).appendTo("#id_bus")
+      })
+    })
+  }
+  
+  // 调用加载方法
+  reloadDate()
+  onload()
+ 
+
+})  
+
+    // 加载页面
+  function reloadData(){
+      var url=baseURL+"/Employment/findAll";
+      $.get(url,function(result){
+        $("#fir tbody" ).empty();
+        $("#sec tbody" ).empty();
+        result.data.forEach(function(item){
+         if(item.status==null){
+           $(`<tr>
+            <td><input type="checkbox" value="`+item.id+`"></td>
+            <td>`+item.title+`</td>
+            <td>`+item.contactName+`</td>
+            <td>`+item.contactPhone+`</td>
+            <td>`+item.job+`</td>
+            <td>`+dateParse(item.publishTime)+`</td>
+            <td><a href="#" id="btn-detail">查看</a></td>
+             <td><button class="btn btn-orange" id="fonze">通过</button>
+                <button class="btn btn-green">拒绝</button></td>
+          </tr>`).appendTo("#fir tbody")
+           // $(`<tr>
+           //  <td><input type="checkbox" value="`+item.id+`" name=""></td>
+           //  <td>`+item.name+`</td>
+           //  <td>`+item.contactName+`</td>
+           //  <td>`+item.contactPhone+`</td>
+           //  <td>`+item.industry+`</td>
+           //  <td>`+item.location+`</td>
+           //  <td>`+item.scale+`</td>
+           //  <td><a href="#" id="btn_detail">详情</a></td>
+           //  <td><button class="btn btn-orange" id="fonze">通过</button>
+           //      <button class="btn btn-green">拒绝</button></td>
+           //  </tr>`).appendTo("#bus_table tbody")
+         }
+        })
+    })
+    }
+    reloadData()
+    // 提交信息
+    var baseURL="http://203.195.246.58:7777";
+ 
+    //转换日期的函数 
+  var dateParse=(dataString)=>{
+      if(dataString){
+        let date = new Date(dataString);
+        let Y = date.getFullYear() + '-';
+        let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        let D = (date.getDate()< 10 ? '0'+date.getDate() : date.getDate())+' ';
+        let h = (date.getHours()< 10 ? '0'+date.getHours() : date.getHours())+ ':';
+        let m = (date.getMinutes()< 10 ? '0'+date.getMinutes() : date.getMinutes())+ ':';
+        let s = (date.getSeconds()< 10 ? '0'+date.getSeconds() : date.getSeconds());
+        return Y+M+D+h+m+s;
+      }else{
+        return '';
+      }
+    }
+ 
+  $(function () {
+    
+    // 通过某种方式查询
+  function onload(){
+    var url=baseURL+"/Employment/findAll"
+    $.get(url,function(result){
+      result.data.forEach(function(item){
+        if(item.status=="招聘中"){
+          // 按job查询
+          $(`<option name="job" value="`+item.job+`">`+item.job+`</option>`).appendTo("#job_resuiting")
+          $(`<option name="job" value="`+item.job+`">`+item.job+`</option>`).appendTo("#emit-job")
+
+        }else{
+          $(`<option name="job" value="`+item.job+`">`+item.job+`</option>`).appendTo("#job_resuited")
+        }
+        
+      })
+    })
+
+     
+  }
+  onload()
+  var data;
+  $("#job_resuiting").change(function(){
+    var val=$(this).val();
+    var obj={
+      job:val
+    }
+    var url=baseURL+"/Employment/findByJob";
+    $("#fir tbody").empty();
+    $.get(url,obj,function(res){
+      onload();
+      res.data.forEach(function(item){
+            $(`<tr>
+            <td><input type="checkbox" value="`+item.id+`"></td>
+            <td>`+item.title+`</td>
+            <td>`+item.contactName+`</td>
+            <td>`+item.contactPhone+`</td>
+            <td>`+item.job+`</td>
+            <td>`+dateParse(item.publishTime)+`</td>
+            <td><a href="#" id="btn-detail">查看</a></td>
+            <td><a href="#" id="btn_del">
+              <span class="fa fa-trash text-danger mr-3 "></span></a>
+            <a href="#" id="btn_emit">
+              <span class="fa fa-edit text-primary "></td>
+          </tr>`).appendTo("#fir tbody")      
+      })
+    })
+  })
+  
+})
+</script>
